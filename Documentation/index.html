@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FinNews AI — Financial News, Made Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f6;--surface:#fff;--ink:#14213d;--muted:#5b6478;--line:#e3e1da;--accent:#0f6e56;--accent-ink:#fff;--accent-soft:#e3f1ec;--up:#0f7a4f;--down:#b3372f;--shadow:0 1px 2px rgba(20,33,61,.06);
+--serif:"Newsreader",Georgia,serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--surface:#171c28;--ink:#e8ebf2;--muted:#9aa3b7;--line:#2a3142;--accent:#3fb593;--accent-ink:#0b1a15;--accent-soft:#16302a;--up:#4cc58f;--down:#ef7f76}}
+:root[data-theme="dark"]{--bg:#10141d;--surface:#171c28;--ink:#e8ebf2;--muted:#9aa3b7;--line:#2a3142;--accent:#3fb593;--accent-ink:#0b1a15;--accent-soft:#16302a;--up:#4cc58f;--down:#ef7f76}
+html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+section{padding:64px 0}
+.h2{font-size:32px;margin-bottom:8px}
+.lead{color:var(--muted);margin:0 0 32px;max-width:60ch}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{font:500 15px var(--sans);border-radius:10px;padding:10px 18px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{padding:6px 12px;font-size:13px}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;gap:24px;height:64px}
+.logo{font:600 22px var(--serif);text-decoration:none}.logo b{color:var(--accent)}
+.nav nav{display:flex;gap:24px;margin-left:24px;flex:1}
+.nav nav a{text-decoration:none;font-size:15px;color:var(--muted)}.nav nav a:hover{color:var(--ink)}
+.icon-btn{background:none;border:0;padding:8px;color:var(--ink);cursor:pointer;display:grid;place-items:center}
+.menu{display:none}
+.hero{padding:72px 0 48px}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:56px;margin-bottom:16px}
+.hero p{font-size:19px;color:var(--muted);margin:0 0 32px;max-width:46ch}
+.hero .row{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.hero .row a.link{font-weight:500;text-decoration:none;border-bottom:1px solid var(--line)}
+.preview{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.pv-bar{display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.pv-body{padding:20px}
+.pv-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px}
+.pv-orig{font:500 19px/1.35 var(--serif);color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line);margin:0 0 20px}
+.pv-simple{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 16px}
+.pv-simple p{margin:0;font:500 19px/1.4 var(--serif)}
+.tag{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:2px 8px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{font:500 14px var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 16px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.news-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;transition:border-color .15s}
+.card:hover{border-color:var(--muted)}
+.thumb{height:132px;display:flex;align-items:flex-end;padding:12px 16px;color:#fff;font:600 13px var(--sans)}
+.card-body{padding:16px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-size:20px}
+.card p{margin:0;font-size:14px;color:var(--muted)}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;font-size:13px;color:var(--muted)}
+.state{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;grid-column:1/-1}
+.notice{font-size:13px;color:var(--muted);margin-top:16px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 1fr}
+.tool>div{padding:24px}
+.tool .in{border-right:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+label{font-weight:500;font-size:15px}
+textarea{width:100%;flex:1;min-height:260px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--sans);padding:12px}
+.out h3{font-size:18px;margin:20px 0 8px}.out h3:first-child{margin-top:0}
+.out p,.out li{font-size:15px;margin:0 0 8px}
+.out ul{padding-left:20px;margin:0}
+dl{margin:0}dt{font-weight:600;font-size:15px}dd{margin:0 0 10px;color:var(--muted);font-size:14px}
+.empty{color:var(--muted);font-size:15px}
+.stamp{font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin-top:20px;padding-top:12px}
+.mkt{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.mkt div{padding:16px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.mkt b{display:block;font-size:14px;font-weight:500;color:var(--muted)}
+.mkt span{font:600 20px var(--serif)}
+.mkt em{font-style:normal;font-size:13px;font-weight:500;margin-left:8px}
+.up{color:var(--up)}.down{color:var(--down)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;counter-reset:s}
+.steps div{border-top:2px solid var(--ink);padding-top:16px}
+.steps h3{font-size:22px;margin:8px 0}
+.steps p,.uc p{margin:0;color:var(--muted);font-size:15px}
+.steps svg{color:var(--accent)}
+.ucs{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.uc{border-left:2px solid var(--accent);padding-left:16px}
+.uc h3{font-size:20px;margin-bottom:4px}
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.trust ul{list-style:none;padding:0;margin:0;display:grid;gap:12px}
+.trust li{display:flex;gap:12px;font-size:15px}.trust li svg{flex:none;color:var(--accent);margin-top:3px}
+.band{background:var(--surface);border-block:1px solid var(--line)}
+footer{padding:48px 0 32px;border-top:1px solid var(--line)}
+.foot{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.foot nav{display:flex;gap:20px;flex-wrap:wrap}.foot nav a{color:var(--muted);text-decoration:none;font-size:14px}
+.fine{font-size:13px;color:var(--muted);margin-top:32px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:r 1s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes r{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:900px){.hero-grid,.tool,.trust{grid-template-columns:1fr}.tool .in{border-right:0;border-bottom:1px solid var(--line)}.grid,.steps{grid-template-columns:1fr 1fr}.ucs{grid-template-columns:1fr 1fr}.mkt{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:44px}}
+@media(max-width:640px){.wrap{padding:0 16px}section{padding:48px 0}.grid,.steps,.ucs{grid-template-columns:1fr}.hero h1{font-size:38px}.h2{font-size:28px}.menu{display:grid}.nav nav{display:none;position:absolute;top:calc(64px + env(safe-area-inset-top,0px));left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);padding:16px;margin:0;gap:16px}.nav nav.open{display:flex}.nav .cta{display:none}.nav{gap:8px}.logo{flex:1}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="logo" href="#home">FinNews <b>AI</b></a>
+  <nav id="nav" aria-label="Main">
+    <a href="#home">Home</a><a href="#news">Latest News</a><a href="#markets">Markets</a><a href="#simplify">Simplify News</a><a href="#about">About</a>
+  </nav>
+  <button class="icon-btn" aria-label="Search" onclick="document.getElementById('news').scrollIntoView();"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+  <a class="btn primary sm cta" href="#simplify">Get Started</a>
+  <button class="icon-btn menu" aria-label="Menu" aria-controls="nav" onclick="document.getElementById('nav').classList.toggle('open')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div></header>
+
+<main id="home">
+<div class="wrap hero"><div class="hero-grid">
+  <div>
+    <h1>Financial News, Made Simple.</h1>
+    <p>Understand markets, business, and economic news without the complicated financial jargon.</p>
+    <div class="row"><button class="btn primary" id="heroFetch">Fetch &amp; Simplify News</button><a class="link" href="#how">How it works →</a></div>
+  </div>
+  <article class="preview" aria-label="Example of a simplified article">
+    <div class="pv-bar"><span>Economy</span><span>Sample article</span></div>
+    <div class="pv-body">
+      <div class="pv-label">Original</div>
+      <p class="pv-orig">Federal Reserve maintains restrictive monetary policy amid persistent inflationary pressures.</p>
+      <div class="pv-label">Simplified <span class="tag">AI-generated</span></div>
+      <div class="pv-simple"><p>The US central bank is keeping interest rates high because inflation is still a concern.</p></div>
+    </div>
+  </article>
+</div></div>
+
+<section id="news" style="padding-top:32px"><div class="wrap">
+  <div class="news-top"><div><h2 class="h2">Latest Financial News</h2><p class="lead" style="margin-bottom:24px">Pick a story and simplify it in one click.</p></div></div>
+  <div class="filters" role="group" aria-label="Filter by category" id="filters"></div>
+  <div class="grid" id="newsGrid" aria-live="polite"></div>
+  <p class="notice" id="newsNote"></p>
+</div></section>
+
+<section id="simplify" class="band"><div class="wrap">
+  <h2 class="h2">Understand the Story in Seconds</h2>
+  <p class="lead">Paste an article or enter a news URL, or choose a story from the latest news above.</p>
+  <div class="tool">
+    <div class="in">
+      <label for="src">Paste an article or enter a news URL</label>
+      <textarea id="src" placeholder="Paste the full text of a financial news article, or a link to one."></textarea>
+      <div><button class="btn primary" id="go">Simplify Article</button></div>
+    </div>
+    <div class="out" id="out" aria-live="polite"><p class="empty">Your simplified summary will appear here: a plain-English summary, key points, financial terms and why the story matters.</p></div>
+  </div>
+</div></section>
+
+<section id="markets"><div class="wrap">
+  <h2 class="h2">Market Snapshot</h2>
+  <p class="lead">Sample data for demonstration. Live prices appear once a market data source is connected.</p>
+  <div class="mkt" id="mkt"></div>
+</div></section>
+
+<section id="how" class="band"><div class="wrap">
+  <h2 class="h2">How It Works</h2><p class="lead">From headline to plain English in three steps.</p>
+  <div class="steps">
+    <div><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h13v14H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 13h5"/></svg><h3>Find the news</h3><p>Latest financial news is collected from trusted sources.</p></div>
+    <div><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/></svg><h3>AI simplifies it</h3><p>The language model reads the article and removes unnecessary financial jargon.</p></div>
+    <div><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12l5 5L20 6"/></svg><h3>Understand the story</h3><p>You get a concise summary, key points, term explanations and context.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2 class="h2">Who It's For</h2><p class="lead">Anyone who wants the meaning of a story, not just the vocabulary.</p>
+  <div class="ucs">
+    <div class="uc"><h3>Retail investors</h3><p>Quickly understand market-moving news.</p></div>
+    <div class="uc"><h3>Students</h3><p>Learn difficult financial concepts through simple explanations.</p></div>
+    <div class="uc"><h3>Professionals</h3><p>Get important economic developments before meetings.</p></div>
+    <div class="uc"><h3>Everyday readers</h3><p>Understand business and economic news without financial expertise.</p></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap trust">
+  <div><h2 class="h2">Trust &amp; Transparency</h2><p class="lead" style="margin:0">FinNews AI simplifies financial information for educational and informational purposes. Summaries are AI-generated and should be checked against the original source.</p></div>
+  <ul>
+    <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12l5 5L20 6"/></svg><span><b>Source attribution.</b> Every story names its publisher.</span></li>
+    <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12l5 5L20 6"/></svg><span><b>Original article link.</b> One click back to the full report.</span></li>
+    <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12l5 5L20 6"/></svg><span><b>AI-generated label and timestamp</b> on every summary.</span></li>
+    <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12l5 5L20 6"/></svg><span><b>Not financial advice.</b> We explain the news; we don't tell you what to buy or sell.</span></li>
+  </ul>
+</div></section>
+
+<section id="about"><div class="wrap" style="max-width:760px">
+  <h2 class="h2">About FinNews AI</h2>
+  <p>FinNews AI is built to make financial reporting readable. Headlines are retrieved through NewsAPI and passed to a FastAPI backend, which asks Groq's Llama 3.3 70B model to rewrite each story in plain language. The interface you're using is a lightweight HTML, CSS and JavaScript frontend, so it stays fast on any device.</p>
+  <p style="color:var(--muted)">It was designed as an educational tool: a way to learn how to read the news, not a replacement for it.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot"><div><div class="logo">FinNews <b>AI</b></div><p style="color:var(--muted);margin:4px 0 0">Making financial news easier to understand.</p></div>
+  <nav aria-label="Footer"><a href="#home">Home</a><a href="#news">Latest News</a><a href="#about">About</a><a href="#about">Privacy</a><a href="#about">Disclaimer</a></nav></div>
+  <p class="fine">AI-generated summaries may contain errors. Always refer to the original article for complete information.</p>
+</div></footer>
+
+<script>
+/* ---- Configure the backend here ---- */
+const CONFIG = { API_BASE: "http://localhost:8000", ENDPOINTS: { news: "/news", simplify: "/simplify", health: "/health" }, TIMEOUT_MS: 15000 };
+const url = k => CONFIG.API_BASE + CONFIG.ENDPOINTS[k];
+
+const CATS = ["All","Markets","Stocks","Economy","Business","Technology"];
+const HUES = {Markets:"#1f3a5f",Stocks:"#0f6e56",Economy:"#5a4a2f",Business:"#3d4a63",Technology:"#2b5a6b"};
+const SAMPLE = [
+ {id:1,category:"Economy",title:"Fed holds rates steady, signals patience as inflation stays above target",description:"Policymakers left borrowing costs unchanged and said further progress on prices is needed before any cuts.",source:"Sample Wire",publishedAt:h(2),url:"#"},
+ {id:2,category:"Markets",title:"Global equities edge higher as investors weigh earnings and bond yields",description:"Major indexes closed mixed to positive while Treasury yields eased from recent highs.",source:"Sample Markets Daily",publishedAt:h(3),url:"#"},
+ {id:3,category:"Stocks",title:"Chipmaker shares climb after upbeat guidance on data-centre demand",description:"The company raised its revenue outlook for the coming quarter, lifting the wider semiconductor group.",source:"Sample Business Post",publishedAt:h(5),url:"#"},
+ {id:4,category:"Business",title:"Retailers report cautious consumer spending heading into festive season",description:"Companies point to selective buying and a stronger focus on discounts and essentials.",source:"Sample Business Post",publishedAt:h(7),url:"#"},
+ {id:5,category:"Economy",title:"India's retail inflation cools, easing pressure on the central bank",description:"Lower food prices helped bring the annual rate down, boosting expectations for a steady policy stance.",source:"Sample Wire",publishedAt:h(9),url:"#"},
+ {id:6,category:"Technology",title:"Banks accelerate AI rollout in customer service and fraud detection",description:"Lenders say automation is cutting response times, while regulators ask for clearer oversight.",source:"Sample Tech Review",publishedAt:h(12),url:"#"}];
+function h(n){return new Date(Date.now()-n*36e5).toISOString()}
+const ago=iso=>{const m=Math.round((Date.now()-new Date(iso))/6e4);return m<60?m+" min ago":m<1440?Math.round(m/60)+" hr ago":Math.round(m/1440)+" d ago"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function api(u,opt={}){const c=new AbortController();const t=setTimeout(()=>c.abort(),CONFIG.TIMEOUT_MS);try{const r=await fetch(u,{...opt,signal:c.signal});if(!r.ok)throw new Error(r.status);return await r.json()}finally{clearTimeout(t)}}
+
+let stories=[],cat="All";
+const grid=document.getElementById("newsGrid"),note=document.getElementById("newsNote");
+document.getElementById("filters").innerHTML=CATS.map(c=>`<button class="chip" aria-pressed="${c==="All"}" data-c="${c}">${c}</button>`).join("");
+document.getElementById("filters").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;cat=b.dataset.c;document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b));render()};
+
+function render(){
+  const list=stories.filter(s=>cat==="All"||s.category===cat);
+  if(!list.length){grid.innerHTML='<div class="state">No financial stories found.</div>';return}
+  grid.innerHTML=list.map(s=>`<article class="card"><div class="thumb" style="background:${HUES[s.category]||"#3d4a63"}">${esc(s.source)}</div><div class="card-body"><span class="tag" style="align-self:flex-start">${esc(s.category)}</span><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p><div class="meta"><span>${esc(s.source)} · ${ago(s.publishedAt)}</span><button class="btn sm" data-id="${s.id}">Simplify</button></div></div></article>`).join("");
+}
+grid.onclick=e=>{const b=e.target.closest("[data-id]");if(!b)return;const s=stories.find(x=>String(x.id)===b.dataset.id);document.getElementById("src").value=(s.content||s.title+". "+s.description);document.getElementById("simplify").scrollIntoView();simplify(s)};
+
+async function loadNews(){
+  grid.innerHTML='<div class="state"><span class="spin"></span>Fetching the latest financial news…</div>';note.textContent="";
+  try{const d=await api(url("news"));stories=(d.articles||d).map((a,i)=>({id:a.id??i,category:a.category||"Business",title:a.title,description:a.description||"",source:a.source?.name||a.source||"Unknown",publishedAt:a.publishedAt||a.published_at,url:a.url,content:a.content}));}
+  catch(e){stories=SAMPLE;note.textContent="Unable to load news right now. Please try again. Showing sample stories while the backend is offline.";}
+  render();
+}
+
+const GLOSS={"inflation":"A general increase in prices over time.","interest rate":"The cost of borrowing money.","interest rates":"The cost of borrowing money.","bull market":"A period when asset prices are generally rising.","bear market":"A period when asset prices are generally falling.","monetary policy":"How a central bank manages the money supply and interest rates.","yield":"The return you earn on a bond, shown as a yearly percentage.","yields":"The return you earn on a bond, shown as a yearly percentage.","earnings":"The profit a company reports for a period.","guidance":"A company's own forecast of its future results.","central bank":"The national institution that controls interest rates and money supply.","equities":"Another word for company shares.","recession":"A significant, widespread slowdown in economic activity."};
+function demoSimplify(text,s){
+  const low=text.toLowerCase();const terms=Object.keys(GLOSS).filter(k=>low.includes(k)).filter((k,i,a)=>!a.includes(k+"s")).slice(0,4);
+  const sents=text.split(/(?<=[.!?])\s+/).filter(x=>x.length>30).slice(0,3);
+  return{summary:(s?`This story is about: ${s.title}. `:"")+"In plain terms, "+(sents[0]||text.slice(0,160))+" The main point is how this development could affect prices, borrowing costs or company results.",
+  key_points:sents.length?sents.map(x=>x.replace(/\s+/g," ")):["Paste a longer article for more detailed points."],
+  terms:terms.map(t=>({term:t,explanation:GLOSS[t]})),
+  why_it_matters:"News like this can influence loan rates, savings returns and the prices of investments. Understanding it helps you follow what is happening in the economy.",
+  demo:true};
+}
+async function simplify(story){
+  const out=document.getElementById("out"),text=document.getElementById("src").value.trim();
+  if(!text){out.innerHTML='<p class="empty">Paste an article or a link first, then select Simplify Article.</p>';return}
+  out.innerHTML='<p class="empty"><span class="spin"></span>Reading and simplifying the article…</p>';
+  const isUrl=/^https?:\/\/\S+$/.test(text);let d;
+  try{d=await api(url("simplify"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(isUrl?{url:text}:{text})});}
+  catch(e){await new Promise(r=>setTimeout(r,600));d=demoSimplify(isUrl?"":text,story);}
+  const kp=d.key_points||[],tm=d.terms||[];
+  out.innerHTML=`<h3>Simple Summary</h3><p>${esc(d.summary)}</p><h3>Key Points</h3><ul>${kp.map(k=>`<li>${esc(k)}</li>`).join("")}</ul>${tm.length?`<h3>Financial Terms</h3><dl>${tm.map(t=>`<dt>${esc(t.term)}</dt><dd>${esc(t.explanation)}</dd>`).join("")}</dl>`:""}<h3>Why It Matters</h3><p>${esc(d.why_it_matters)}</p><div class="stamp"><span class="tag">AI-generated</span> ${new Date().toLocaleString()}${story&&story.url&&story.url!=="#"?` · <a href="${esc(story.url)}" rel="noopener">Original article</a>`:""}${d.demo?" · Demo output (backend not connected)":""}<br>For education only, not financial advice. Check the original source.</div>`;
+}
+document.getElementById("go").onclick=()=>simplify();
+document.getElementById("heroFetch").onclick=async()=>{document.getElementById("news").scrollIntoView();await loadNews();if(stories[0]){document.getElementById("src").value=stories[0].content||stories[0].title+". "+stories[0].description;simplify(stories[0])}};
+
+const MK=[["S&P 500","5,842.10","+0.42%",1],["NASDAQ","18,420.55","+0.61%",1],["Dow Jones","42,015.30","-0.08%",0],["NIFTY 50","24,890.75","+0.27%",1],["Sensex","81,320.40","+0.24%",1],["Gold","$2,655 /oz","-0.15%",0],["USD/INR","83.92","+0.05%",1]];
+document.getElementById("mkt").innerHTML=MK.map(m=>`<div><b>${m[0]}</b><span>${m[1]}</span><em class="${m[3]?"up":"down"}">${m[3]?"▲":"▼"} ${m[2].replace(/^[+-]/,"")}</em></div>`).join("");
+
+loadNews();
+</script>
+</body>
+</html>
